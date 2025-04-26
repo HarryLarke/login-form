@@ -1,3 +1,14 @@
+* {
+  padding: 0.5rem;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -26,13 +37,54 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+}
+
+.App {
+  width: 80%;
+  height: 100%;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  border: solid 5px  rgba(255, 255, 255, 0.87);
+  border-radius: 5px;
+
+}
+
+input {
+  width: 300px;
+  height: 50px;
+
+  font-size: 1.3rem;
+}
+
+.loginForm {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  height: 60vh;
+  width: 40vh;
 }
 
 button {
