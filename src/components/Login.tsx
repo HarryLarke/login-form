@@ -1,5 +1,7 @@
-import { FormEvent, useRef, useState, useEffect } from "react"
+import { FormEvent, useRef, useState, useEffect, useContext } from "react"
 import { isAxiosError, AxiosResponse } from "axios"
+import useAuth from "../hooks/useAuth"
+=
 
 import axios from '../api/axios'
 
@@ -15,6 +17,7 @@ const Login = () => {
     const [ user, setUser ] = useState<string>('')
     const [ pwd, setPwd ] = useState<string>('')
     const [ errMsg, setErrMsg ] = useState<string>('')
+    const { setAuth } = useAuth()
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault() 
@@ -27,6 +30,8 @@ const Login = () => {
                         withCredentials: true
                     })
             console.log(JSON.stringify(response?.data))
+            const accessToken:string = response?.data.accessToken
+            setAuth({accessToken})
         } catch(err: unknown) {
             if (isAxiosError(err)) {
                 if(!err.response) {

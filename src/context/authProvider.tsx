@@ -1,14 +1,22 @@
-import { createContext, useState, reactNode } from "react";
+import { createContext, useState, ReactNode } from "react";
 //Will receive children!
 
+interface AuthContentType {
+    auth: Record<string, any>,
+    setAuth: React.Dispatch<React.SetStateAction<Record<string, any>>>
+}
 
-const AuthContext:object = createContext({})
+interface AuthProviderProps {
+    children : ReactNode
+}
 
-export const AuthProvider = ({children}) => {
+const AuthContext = createContext<AuthContentType | undefined>(undefined)
+
+export const AuthProvider = ({children}: AuthProviderProps) => {
     const [ auth, setAuth ] = useState({})
 
     return (
-        <AuthContext.Provider value={{auth, setAuth}}>{children}</AuthContent.Provider>
+        <AuthContext.Provider value={{auth, setAuth}}>{children}</AuthContext.Provider>
     )
 }
 

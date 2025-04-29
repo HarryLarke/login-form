@@ -10,7 +10,7 @@ function App() {
       <Route>
         <Route path='/' element={<Layout/>}>
           {/* Public Routes */}
-          <Route path="login" element={<Login/>}/>
+          <Route path="/login" element={<Login/>}/>
 
           {/* Protected Routes */}
           <Route path='/home' element={<Home/>}/> 
