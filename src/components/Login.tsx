@@ -32,6 +32,8 @@ const Login = () => {
             console.log(JSON.stringify(response?.data))
             const accessToken:string = response?.data.accessToken
             setAuth({accessToken})
+            setUser('')
+            setPwd('')
         } catch(err: unknown) {
             if (isAxiosError(err)) {
                 if(!err.response) {
