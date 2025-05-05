@@ -118,3 +118,15 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.offscreen {
+  position: absolute;
+  left: -9999px
+}
+
+
+.errmsg {
+  background-color: #646cff;
+  color: red;
+  font-weight: bold;
+}

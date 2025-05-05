@@ -5,13 +5,17 @@ import Login from "./components/Login"
 import Unauthorized from "./components/Unauthorised"
 import Home from "./components/Home"
 import RequireAuth from "./components/RequireAuth"
+import ViewEmployees from "./components/ViewEmployees"
+import AddEmployee from "./components/AddEmployee"
+import EditEmployee from "./components/EditEmployee"
 //Will need some route protection!!!
-
+//Currentlly a string - will be a stringType when coming from the AT?
 const ROLES = {
-  'user': 2001,
-  'editor': 1984,
-  'admin': 5150
+  'user': '2001',
+  'editor': '1984',
+  'admin': '5150'
 }
+
 
 function App() { 
   return (
@@ -24,7 +28,16 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<RequireAuth allowedRoles={ROLES.user}/>}>
-          <Route path='/home' element={<Home/>}/> 
+          <Route path='/' element={<Home/>}/> 
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={ROLES.admin}/>}>
+            <Route path="/employees" element={<ViewEmployees/>}/>
+            <Route path="/employees/edit" element={<EditEmployee/>}/>
+          </Route>
+
+          <Route element={<RequireAuth allowedRoles={ROLES.editor}/>}>
+            <Route path="/addEmployee" element={<AddEmployee/>}/>
           </Route>
     
         </Route>

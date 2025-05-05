@@ -9,7 +9,7 @@ interface DecodedToken {
 }
 
 interface RequireAuthProps {
-    allowedRoles : Number
+    allowedRoles : string
 }
 
 const RequireAuth = ({allowedRoles}: RequireAuthProps) => {
@@ -20,7 +20,7 @@ const RequireAuth = ({allowedRoles}: RequireAuthProps) => {
     const roles = decoded?.UserInfo?.roles || []
 
     return(
-        roles.find(role => allowedRoles?.includes(role))    
+        roles.find(role => allowedRoles?.includes(role))   //I believe includes searches through stirng types, while allowedRoles is number  
             ? <Outlet/>
             : auth.accessToken //don't know how I fee about using AT?
                 ? <Navigate to='/unauthorized' state={{ from:location }} replace/>

@@ -40,6 +40,6 @@ const useAxiosPrivate = () => {
 
     }, [auth, refresh])
 
-   
-
 }
+
+export default useAxiosPrivate

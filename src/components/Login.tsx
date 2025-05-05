@@ -13,11 +13,21 @@ interface LoginResponse {
 }
 
 const Login = () => {
+    const userRef = useRef()
+    const errRef = useRef()
 
     const [ user, setUser ] = useState<string>('')
     const [ pwd, setPwd ] = useState<string>('')
     const [ errMsg, setErrMsg ] = useState<string>('')
     const { setAuth } = useAuth()
+
+    useEffect(() => {
+        userRef.current.foucs()
+    }, [])
+
+    useEffect(() => {
+        {setErrMsg('')}
+    }, [pwd, user])
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault() 
@@ -44,19 +54,25 @@ const Login = () => {
                     setErrMsg('Unauthorised')
                 } else {
                     setErrMsg('Login Failed')
-                }
-        }}
+                }}
+            errRef.current.focus()
+            }
     }
 
   return (
     <>
         <section>
         <h1>Login Page</h1>
-        {!errMsg ? <p>No Errors</p> : <p>{errMsg}</p> }
+
+        <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'}
+        aria-live="assertive"
+        >{errMsg}</p>
+
         <form className="loginForm"
             onSubmit={handleLogin}>
             <label htmlFor="username">Username:</label>
             <input type="text"
+            ref={userRef}
             id="username"
             value={user}
             onChange={(e:React.ChangeEvent<HTMLInputElement>) => setUser(e.target.value) }

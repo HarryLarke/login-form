@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const Home = () => {
     //Could have a conditional variable to send you to the specific pages, based on roles, access, etc. 
     //This will still require access control on the router. 
@@ -5,9 +7,16 @@ const Home = () => {
   return (
     <>
         <h1>Home Page</h1>
+
         <section>
-            <p>Please choose a page:</p>
-            <ul></ul>
+            <h2>Please choose a page:</h2>f
+            <ul>
+              <li><Link to={'/employees'}>View Employees</Link></li>
+              <li><Link to={'/addEmployee'}>Add Employee</Link></li>
+              <li><Link to={'/employees'}>Edit Employees</Link></li>
+            </ul>
+
+            <button>Logout</button> 
         </section>
     </>
   )
