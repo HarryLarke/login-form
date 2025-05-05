@@ -10,10 +10,9 @@ const EMPLOYEES_URL = '/employees'
 
 const ViewEmployees = () => {
     const axiosPrivate = useAxiosPrivate()
-    const [ employees, setEmployees] = useState([]) //maybe make into an object?
     const location = useLocation()
     const navigate = useNavigate()
-    const { setEmployeeNames } = useData()
+    const { employees, setEmployees } = useData()
 
     const goBack = () => navigate(-1)
 
@@ -26,7 +25,6 @@ const ViewEmployees = () => {
                     signal: controller.signal 
                 })
                 const employees = response.data //Will need to find the correct manner to get and display this data?
-                setEmployeeNames(employees)
                 isMounted && setEmployees(employees)
             } catch(err:unknown) {
                     if(isAxiosError(err)) {
@@ -46,17 +44,14 @@ const ViewEmployees = () => {
     }, [axiosPrivate, location, navigate])
 
 
-
-
-
     let content 
 
     if(!employees) {
         content = <p>No users to display...</p>
     }  else {
         content = <ul>
-            {employees.map((employee, i) => <li key={i}
-            >Name:{employee}</li>)} 
+            {employees.map((employee, id) => <li key={id}
+            >Name:{employee}<Link to={`/employees/edit/${id}`}>Edit</Link></li>)} 
         </ul>
     }
 
@@ -67,8 +62,6 @@ const ViewEmployees = () => {
     <section>
 
         {content}
-
-        <Link to={'/Edit'}>Edit</Link>
         <Link to={'/'}>Home</Link>
         <Link to={'/addEmployee'}>Add Employee</Link>
     </section>

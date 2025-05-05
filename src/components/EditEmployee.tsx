@@ -1,21 +1,26 @@
 import { useState, useRef, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import useAxiosPrivate from "../hooks/useAxiosPrivate"
+import { useNavigate, useParams } from "react-router-dom"
 import { isAxiosError } from "axios"
+import useAxiosPrivate from "../hooks/useAxiosPrivate"
+import useData from "../hooks/useData"
+
 
 const EMPLOYEES_URL = '/employees'
 
 const EditEmployee = ({}) => {
     //Would it be easier to use hooks??
     //Could useprops and drilling? 
-
+    const { employees } = useData()
     const userRef = useRef() 
     const errRef = useRef()   
-    const [ newName, setNewName ] = useState('')
+    const [ name, setName ] = useState('')
     const [ errMsg, setErrMsg ] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
+    const { id } = useParams()
 
+    const employeeName = employees.find(employees.id == id)
+    //Make a wawy to find the employee name! 
     useEffect(() => {
         userRef.current.focus()
     }, [])
@@ -45,7 +50,8 @@ const EditEmployee = ({}) => {
 
     const handleEdit = async () => {
         try {
-            const response = await axiosPrivate.put(`${EMPLOYEES_URL}/${id}` {name})
+            const response = await axiosPrivate.put(`${EMPLOYEES_URL}/${id}`, {name})
+            console.log(response)
             navigate('/employess')
         } catch(err: unknown) {
             if(isAxiosError(err)) {
@@ -73,7 +79,8 @@ const EditEmployee = ({}) => {
                 <input
                 ref={userRef}
                 id="employeeName"
-                value={name}
+                required
+                value={employeeName}
                 onChange={(e) => setName(e.target.value)}
                 />
 

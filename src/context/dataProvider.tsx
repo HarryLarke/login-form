@@ -1,12 +1,14 @@
 import { createContext, useState, ReactNode, SetStateAction  } from "react";
 
+//Maybe change the data type??
 interface Data {
-    employeeName : string
+    employee : string,
+    id: string
 }
 
 interface DataContentType {
-    employeeNames: Data
-    setEmployeeNames: React.Dispatch<SetStateAction<Data>>
+    employees: Data
+    setEmployees: React.Dispatch<SetStateAction<Data>>
 }
 
 interface DataProviderProps {
@@ -16,10 +18,10 @@ interface DataProviderProps {
 const DataContext = createContext<DataContentType | undefined>(undefined)
 
 export const DataProvider = ({children}: DataProviderProps) => {
-    const [ employeeNames, setEmployeeNames] = useState<Data>({employeeName:''})
+    const [ employees, setEmployees] = useState<Data>({employee:''})
 
     return(
-        <DataContext.Provider value={{employeeNames, setEmployeeNames}}>{children}</DataContext.Provider>
+        <DataContext.Provider value={{employees, setEmployees}}>{children}</DataContext.Provider>
     )
 
 }
