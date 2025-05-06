@@ -5,6 +5,8 @@ import { createContext, useState, ReactNode, SetStateAction } from "react";
 //However, I believe the backend should handle that data?
 
 interface AuthData {
+    user: string
+    roles?: string[]
     accessToken: string
 }
 
@@ -20,7 +22,11 @@ interface AuthProviderProps {
 const AuthContext = createContext<AuthContentType | undefined>(undefined)
 
 export const AuthProvider = ({children}: AuthProviderProps) => {
-    const [ auth, setAuth ] = useState<AuthData>({accessToken:''}) //Auth contains the user data too!
+    const [ auth, setAuth ] = useState<AuthData>({
+        user: "",
+        roles: [],
+        accessToken: ""
+    }) //Auth contains the user data too!
 
     return (
         <AuthContext.Provider value={{auth, setAuth}}>{children}</AuthContext.Provider>

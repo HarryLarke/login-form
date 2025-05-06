@@ -3,13 +3,15 @@ import { useNavigate, useLocation, Link } from "react-router-dom"
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
 import { AxiosResponse, isAxiosError } from "axios"
 import useData from "../hooks/useData"
+import useAuth from "../hooks/useAuth"
 
 //Always load employees with each component or implment context??? Redux would always be cleaner ;(
 //Think it would be good to set the state of all employees, instead of the seletcted one - see how affects the name on the Edit page?
 
 interface Employee {
     id: string
-    name: string
+    firstname: string
+    lastname: string
 }
 
 interface GetResponse {
@@ -21,8 +23,9 @@ const ViewEmployees = () => {
     const location = useLocation()
     const navigate = useNavigate()
     const { employees, setEmployees } = useData()
+    const { auth } = useAuth()
 
-    const goBack = () => navigate(-1)
+    console.log(auth?.accessToken)
 
     useEffect(() => {
         let isMounted = true 
@@ -30,13 +33,15 @@ const ViewEmployees = () => {
         const getEmployees = async () => {
             try {
                 const response: AxiosResponse<GetResponse> = await axiosPrivate.get('/employees', {
-                    signal: controller.signal 
+                    signal: controller.signal,
+                    withCredentials: true
                 })
-                isMounted && setEmployees(response.data.employees) 
+                console.log(response?.data)
+                console.log(response?.data?.employees)
+                isMounted && setEmployees(response?.data?.employees)
             } catch(err:unknown) {
                     if(isAxiosError(err)) {
-                        console.log(err.message),
-                            goBack
+                        console.log(err.message)
                      }
                     } 
                 }
@@ -53,18 +58,19 @@ const ViewEmployees = () => {
 
     let content 
 
-    if(!employees || employees.length === 0) {
+    if(!employees) {
         content = <p>No users to display...</p>
     }  else {
+        console.log(employees)
         content = <ul>
-            {employees.map((employee) => <li key={employee.id}
-            >Name:{employee.name}<Link to={`/employees/edit/${employee.id}`}>Edit</Link></li>)} 
+            {employees.map((employee) => (<li key={employee.id}
+            >Name:{employee.firstname}</li>))} 
         </ul>
     }
 
   return (
     <>
-    <h1>View Users</h1>
+    <h1>View Employees</h1>
 
     <section>
         {content}

@@ -7,9 +7,7 @@ import useData from "../hooks/useData"
 
 const EMPLOYEES_URL = '/employees'
 
-const EditEmployee = ({}) => {
-    //Would it be easier to use hooks??
-    //Could useprops and drilling? 
+const EditEmployee = () => {
     const { employees } = useData()
     const userRef = useRef<HTMLInputElement>(null) 
     const errRef = useRef<HTMLInputElement>(null)   
@@ -19,8 +17,8 @@ const EditEmployee = ({}) => {
     const navigate = useNavigate()
     const { id } = useParams()
 
-    const employee = employees.filter(employee => employee.id === id)
-
+    const employee = employees.find(employee => employee.id === id)
+    const employeeName = employee?.name
 
     useEffect(() => {
         userRef.current?.focus()
@@ -30,8 +28,6 @@ const EditEmployee = ({}) => {
         setErrMsg('')
     }, [name])
 
-    //Will need to extract the ID!s
-    //Will probably need to send some form of credential !!
     const handleDelete =  async () => {
         try{
             const response:string = await axiosPrivate.delete(`${EMPLOYEES_URL}/${id}`,
@@ -70,7 +66,7 @@ const EditEmployee = ({}) => {
 
   return (
     <>
-        <h1>Edit Employee</h1>
+        <h1>Edit Employee: {employeeName}</h1>
 
         <section>
 

@@ -9,11 +9,10 @@ const Home = () => {
         <h1>Home Page</h1>
 
         <section>
-            <h2>Please choose a page:</h2>f
+            <h2>Please choose a page:</h2>
             <ul>
               <li><Link to={'/employees'}>View Employees</Link></li>
               <li><Link to={'/addEmployee'}>Add Employee</Link></li>
-              <li><Link to={'/employees'}>Edit Employees</Link></li>
             </ul>
 
             <button>Logout</button> 

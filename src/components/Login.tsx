@@ -1,10 +1,11 @@
 import { FormEvent, useRef, useState, useEffect } from "react"
 import { isAxiosError, AxiosResponse } from "axios"
+import { useNavigate } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
-
 import axios from '../api/axios'
 
 
+//Could I set the auth in just one nice object???
 const LOGIN_URL = '/auth'
 
 interface LoginResponse {
@@ -14,6 +15,7 @@ interface LoginResponse {
 const Login = () => {
     const userRef = useRef<HTMLInputElement>(null)
     const errRef = useRef<HTMLInputElement>(null) 
+    const navigate = useNavigate()
 
     const [ user, setUser ] = useState<string>('')
     const [ pwd, setPwd ] = useState<string>('')
@@ -39,10 +41,13 @@ const Login = () => {
                         withCredentials: true
                     })
             console.log(JSON.stringify(response?.data))
-            const accessToken:string = response?.data.accessToken
-            setAuth({accessToken})
+            const accessToken: string = response?.data?.accessToken
+
+            setAuth({user, accessToken})
+
             setUser('')
             setPwd('')
+            navigate('/')
         } catch(err: unknown) {
             if (isAxiosError(err)) {
                 if(!err.response) {

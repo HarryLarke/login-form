@@ -2,8 +2,9 @@ import { createContext, useState, ReactNode, SetStateAction  } from "react";
 
 //Implementing it as an array!
 interface Employee {
-    name : string,
     id: string
+    firstname: string
+    lastname: string
 }
 
 interface DataContentType {
