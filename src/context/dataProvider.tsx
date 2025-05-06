@@ -1,14 +1,14 @@
 import { createContext, useState, ReactNode, SetStateAction  } from "react";
 
-//Maybe change the data type??
-interface Data {
-    employee : string,
+//Implementing it as an array!
+interface Employee {
+    name : string,
     id: string
 }
 
 interface DataContentType {
-    employees: Data
-    setEmployees: React.Dispatch<SetStateAction<Data>>
+    employees: Employee[]
+    setEmployees: React.Dispatch<SetStateAction<Employee[]>>
 }
 
 interface DataProviderProps {
@@ -18,7 +18,7 @@ interface DataProviderProps {
 const DataContext = createContext<DataContentType | undefined>(undefined)
 
 export const DataProvider = ({children}: DataProviderProps) => {
-    const [ employees, setEmployees] = useState<Data>({employee:''})
+    const [ employees, setEmployees] = useState<Employee[]>([])
 
     return(
         <DataContext.Provider value={{employees, setEmployees}}>{children}</DataContext.Provider>

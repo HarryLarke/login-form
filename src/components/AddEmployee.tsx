@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, FormEvent } from "react"
+import { nanoid } from "nanoid"
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import { isAxiosError, AxiosResponse } from "axios"
 
@@ -8,37 +9,36 @@ interface SubmitResponse {
     response: string
 }
 
+//Will need to mess with the employee data etc!`
 
 //Maybe make an internal registeration system? //have to mess with the backend? Or change to users later?
 
 const AddEmployee = () => {
-    const errRef = useRef()
-    const userRef = useRef()
+    const errRef = useRef<HTMLInputElement>(null)
+    const userRef = useRef<HTMLInputElement>(null)
     const axiosPrivate = useAxiosPrivate()
-    const [ employee, setEmployee ] = useState('') //Maybe need more complex userdata 
+    const [ employeeName, setEmployeeName ] = useState('')
     const [ errMsg, setErrMsg] = useState('')
 
     useEffect(() => {
-        userRef.current.focus()
+        userRef.current?.focus()
     }, [])
 
     useEffect(() => {
         setErrMsg('')
-    }, [employee])
+    }, [employeeName])
 
     //Using AxioPrivate  hook here - ts does not like it! 
     //Might mnake a pop up here! To show that the new employee has been added? Plus a option to add a new one and a route to the view employees too! 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLInputElement>) => {
         e.preventDefault()
+        const employee = {name: employeeName, id: nanoid}
         try {
             const response: AxiosResponse<SubmitResponse> = await axiosPrivate.post(EMPLOYEES_URL,
-                JSON.stringify(employee), {
-                    headers: {'Content-Type':'application/json'},
-                    withCredentials: true
-                }     
+                employee
             )
             console.log(response)
-            setEmployee('')
+            setEmployeeName('')
         } catch(err: unknown) {
             if(isAxiosError(err)) {
                 if(!err.response) {
@@ -50,7 +50,7 @@ const AddEmployee = () => {
                 else if (err.response.status === 401) {
                     setErrMsg("Unauthorised Command.")
                 }}
-            errRef.current.focus()
+            errRef.current?.focus()
             } 
     }
 
@@ -65,13 +65,13 @@ const AddEmployee = () => {
             <label htmlFor="employeeName">Add Employess Name:</label>
             <input 
             onSubmit={handleSubmit}
-            ref={useRef}
+            ref={userRef}
             className="username"
             type="text"
             required
             id="employeeName"
-            value={employee}
-            onChange={(e) => setEmployee(e.target.value)}/>
+            value={employeeName}
+            onChange={(e) => setEmployeeName(e.target.value)}/>
             <button>Add</button>
         </form>
     </>

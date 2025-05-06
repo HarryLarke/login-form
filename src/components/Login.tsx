@@ -1,7 +1,6 @@
-import { FormEvent, useRef, useState, useEffect, useContext } from "react"
+import { FormEvent, useRef, useState, useEffect } from "react"
 import { isAxiosError, AxiosResponse } from "axios"
 import useAuth from "../hooks/useAuth"
-
 
 import axios from '../api/axios'
 
@@ -13,8 +12,8 @@ interface LoginResponse {
 }
 
 const Login = () => {
-    const userRef = useRef()
-    const errRef = useRef()
+    const userRef = useRef<HTMLInputElement>(null)
+    const errRef = useRef<HTMLInputElement>(null) 
 
     const [ user, setUser ] = useState<string>('')
     const [ pwd, setPwd ] = useState<string>('')
@@ -22,7 +21,7 @@ const Login = () => {
     const { setAuth } = useAuth()
 
     useEffect(() => {
-        userRef.current.foucs()
+        userRef.current?.focus()
     }, [])
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const Login = () => {
                 } else {
                     setErrMsg('Login Failed')
                 }}
-            errRef.current.focus()
+            errRef.current?.focus()
             }
     }
 

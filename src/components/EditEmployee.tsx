@@ -11,31 +11,32 @@ const EditEmployee = ({}) => {
     //Would it be easier to use hooks??
     //Could useprops and drilling? 
     const { employees } = useData()
-    const userRef = useRef() 
-    const errRef = useRef()   
+    const userRef = useRef<HTMLInputElement>(null) 
+    const errRef = useRef<HTMLInputElement>(null)   
     const [ name, setName ] = useState('')
     const [ errMsg, setErrMsg ] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
     const { id } = useParams()
 
-    const employeeName = employees.find(employees.id == id)
-    //Make a wawy to find the employee name! 
+    const employee = employees.filter(employee => employee.id === id)
+
+
     useEffect(() => {
-        userRef.current.focus()
+        userRef.current?.focus()
     }, [])
 
     useEffect(() => {
         setErrMsg('')
-    }, [newName])
+    }, [name])
 
     //Will need to extract the ID!s
     //Will probably need to send some form of credential !!
     const handleDelete =  async () => {
         try{
-            const response:string = await axiosPrivate.delete(`${EMPLOYEES_URL}/${id}`{
-                withCredentials: true
-            })
+            const response:string = await axiosPrivate.delete(`${EMPLOYEES_URL}/${id}`,
+            )
+            console.log(response)
             navigate('/employees')
         } catch(err: unknown) {
             if(isAxiosError(err)) {
@@ -49,8 +50,9 @@ const EditEmployee = ({}) => {
         }} 
 
     const handleEdit = async () => {
+        const editiedEmployee = {name, id}
         try {
-            const response = await axiosPrivate.put(`${EMPLOYEES_URL}/${id}`, {name})
+            const response = await axiosPrivate.put(`${EMPLOYEES_URL}/${id}`, editiedEmployee)
             console.log(response)
             navigate('/employess')
         } catch(err: unknown) {
@@ -62,7 +64,7 @@ const EditEmployee = ({}) => {
                     setErrMsg('Unauthorised Command')
                 }
             }
-        errRef.current.focus()
+        errRef.current?.focus()
         }} 
 
 
@@ -80,7 +82,7 @@ const EditEmployee = ({}) => {
                 ref={userRef}
                 id="employeeName"
                 required
-                value={employeeName}
+                value={name}
                 onChange={(e) => setName(e.target.value)}
                 />
 

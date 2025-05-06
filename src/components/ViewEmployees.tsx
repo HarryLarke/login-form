@@ -1,12 +1,20 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useNavigate, useLocation, Link } from "react-router-dom"
 import useAxiosPrivate from '../hooks/useAxiosPrivate'
-import { isAxiosError } from "axios"
+import { AxiosResponse, isAxiosError } from "axios"
 import useData from "../hooks/useData"
 
 //Always load employees with each component or implment context??? Redux would always be cleaner ;(
+//Think it would be good to set the state of all employees, instead of the seletcted one - see how affects the name on the Edit page?
 
-const EMPLOYEES_URL = '/employees'
+interface Employee {
+    id: string
+    name: string
+}
+
+interface GetResponse {
+    employees : Employee[]
+}
 
 const ViewEmployees = () => {
     const axiosPrivate = useAxiosPrivate()
@@ -21,16 +29,15 @@ const ViewEmployees = () => {
         const controller = new AbortController()
         const getEmployees = async () => {
             try {
-                const response = await axiosPrivate.get(EMPLOYEES_URL, {
+                const response: AxiosResponse<GetResponse> = await axiosPrivate.get('/employees', {
                     signal: controller.signal 
                 })
-                const employees = response.data //Will need to find the correct manner to get and display this data?
-                isMounted && setEmployees(employees)
+                isMounted && setEmployees(response.data.employees) 
             } catch(err:unknown) {
                     if(isAxiosError(err)) {
                         console.log(err.message),
                             goBack
-                     } //maybe see if can get to go back to prev??
+                     }
                     } 
                 }
     
@@ -46,12 +53,12 @@ const ViewEmployees = () => {
 
     let content 
 
-    if(!employees) {
+    if(!employees || employees.length === 0) {
         content = <p>No users to display...</p>
     }  else {
         content = <ul>
-            {employees.map((employee, id) => <li key={id}
-            >Name:{employee}<Link to={`/employees/edit/${id}`}>Edit</Link></li>)} 
+            {employees.map((employee) => <li key={employee.id}
+            >Name:{employee.name}<Link to={`/employees/edit/${employee.id}`}>Edit</Link></li>)} 
         </ul>
     }
 
@@ -60,7 +67,6 @@ const ViewEmployees = () => {
     <h1>View Users</h1>
 
     <section>
-
         {content}
         <Link to={'/'}>Home</Link>
         <Link to={'/addEmployee'}>Add Employee</Link>
