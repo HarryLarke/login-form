@@ -27,17 +27,18 @@ const ViewEmployees = () => {
 
     console.log(auth?.accessToken)
 
+    //Potentially reset employee data with each reload?
+    
     useEffect(() => {
         let isMounted = true 
         const controller = new AbortController()
         const getEmployees = async () => {
             try {
-                const response: AxiosResponse<GetResponse> = await axiosPrivate.get('/employees', {
+                const response: AxiosResponse<GetResponse, any> = await axiosPrivate.get('/employees', {
                     signal: controller.signal,
                     withCredentials: true
                 })
                 console.log(response?.data)
-                console.log(response?.data?.employees)
                 isMounted && setEmployees(response?.data?.employees)
             } catch(err:unknown) {
                     if(isAxiosError(err)) {
@@ -54,18 +55,18 @@ const ViewEmployees = () => {
         }
 
     }, [axiosPrivate, location, navigate])
-
+    //Potentiall just map names because - don't really want ID being accessed by JS hacking!
 
     let content 
 
-    if(!employees) {
+    if(!employees || employees.length === 0) {
         content = <p>No users to display...</p>
     }  else {
         console.log(employees)
-        content = <ul>
+        content = <ol>
             {employees.map((employee) => (<li key={employee.id}
-            >Name:{employee.firstname}</li>))} 
-        </ul>
+            >{employee.firstname} {employee.lastname}</li>))} 
+        </ol>
     }
 
   return (

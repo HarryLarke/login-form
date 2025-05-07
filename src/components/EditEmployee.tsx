@@ -18,7 +18,7 @@ const EditEmployee = () => {
     const { id } = useParams()
 
     const employee = employees.find(employee => employee.id === id)
-    const employeeName = employee?.name
+    const employeeName = employee?.firstname
 
     useEffect(() => {
         userRef.current?.focus()
