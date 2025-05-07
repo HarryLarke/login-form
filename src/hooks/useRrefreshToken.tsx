@@ -5,15 +5,13 @@ const useRefreshToken = () => {
     const { setAuth } = useAuth()
 
     const refresh = async (): Promise<string> => {
+        console.log('init useRefresh')
         const response = await axios.get<{accessToken : string, roles : string[]}>('/refresh', {
             withCredentials: true
         })
-        setAuth(prev => {
-            return {...prev,
-                roles: response.data.roles,
-                accessToken: response.data.accessToken
-        }})
-        return response.data.accessToken
+        const accessToken = response?.data?.accessToken
+        setAuth(accessToken)
+        return accessToken
     }
     return refresh
 }

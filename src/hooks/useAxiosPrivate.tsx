@@ -9,22 +9,23 @@ const useAxiosPrivate = () => {
     const { auth } = useAuth()
 
     useEffect(() => {
+        console.log('Axios Private init') //This send my AT 
         const requestIntercept = axiosPrivate.interceptors.request.use(
             (config: InternalAxiosRequestConfig<any>) => {
                 if(!config.headers['Authorization']) {
                     config.headers['Authorization'] = `Bearer ${auth?.accessToken}`
                 } 
-                console.log("Request Headers:", config.headers)
                 return config
-            }, 
-            (error) => Promise.reject(error) 
+            }, (error) => Promise.reject(error) 
         )
-
+        
+        //response intercept is not working or activating??
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => response,  
             async (error) => {
                 const prevRequest = error?.config
-                if(error?.resposne?.status === 403 &&!prevRequest?.sent) {
+                if(error?.response?.status === 403 &&!prevRequest?.sent) {
+                    console.log('Response Incepting')
                     prevRequest.sent = true
                     const newAccessToken = await refresh()
                     prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`

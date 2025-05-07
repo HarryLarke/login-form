@@ -28,7 +28,7 @@ const ViewEmployees = () => {
     console.log(auth?.accessToken)
 
     //Potentially reset employee data with each reload?
-    
+
     useEffect(() => {
         let isMounted = true 
         const controller = new AbortController()

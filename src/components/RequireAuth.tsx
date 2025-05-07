@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 interface DecodedToken {
     UserInfo?: {
         roles: string[]
+        user: string
     }
 }
 
@@ -22,7 +23,7 @@ const RequireAuth = ({allowedRoles}: RequireAuthProps) => {
     return(
         roles.find(role => allowedRoles?.includes(role))   //I believe includes searches through stirng types, while allowedRoles is number  
             ? <Outlet/>
-            : auth.accessToken //don't know how I fee about using AT?
+            : auth?.user
                 ? <Navigate to='/unauthorized' state={{ from:location }} replace/>
                 : <Navigate to='/login' state={{ from:location }} replace/>
 
