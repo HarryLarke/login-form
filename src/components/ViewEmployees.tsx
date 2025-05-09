@@ -23,7 +23,7 @@ const ViewEmployees = () => {
     const axiosPrivate = useAxiosPrivate()
     const location = useLocation()
     const navigate = useNavigate()
-    const { employees, setEmployees } = useData()
+    const { employees, setEmployees, setFirstname, setLastname } = useData()
     const { auth } = useAuth()
 
     console.log(auth?.accessToken)
@@ -69,7 +69,9 @@ const ViewEmployees = () => {
         console.log(employees)
         content = <ol>
             {employees.map((employee) => (<li key={employee.id}
-            >{employee.firstname} {employee.lastname}<span><Link to={`/employees/${employee.id}`}>edit</Link></span></li>))} 
+            >{employee.firstname} {employee.lastname}<span>
+                <Link onClick={() => {setFirstname(employee.firstname), setLastname(employee.lastname)} } 
+                to={`/employees/${employee.id}`}>edit</Link></span></li>))} 
         </ol>
     }
 

@@ -7,16 +7,15 @@ interface Employee {
         lastname: string
 }
 
-interface Name {
-    firstname : string
-    lastname : string
-}
+
 
 interface DataContentType {
     employees: Employee[]
     setEmployees: React.Dispatch<SetStateAction<Employee[]>>
-    names: Name[]
-    setNames:  React.Dispatch<SetStateAction<Name[]>>
+    firstname: string
+    setFirstname: React.Dispatch<SetStateAction<string>>
+    lastname: string
+    setLastname: React.Dispatch<SetStateAction<string>>
 }
 
 interface DataProviderProps {
@@ -27,12 +26,13 @@ const DataContext = createContext<DataContentType | undefined>(undefined)
 
 export const DataProvider = ({children}: DataProviderProps) => {
     const [ employees, setEmployees] = useState<Employee[]>([])
-    const [ names, setNames ] = useState<Name[]>([])
+    const [ firstname, setFirstname ] = useState<string>('') 
+    const [ lastname, setLastname ] = useState<string>('') 
 
 
 
     return(
-        <DataContext.Provider value={{employees, setEmployees, names, setNames}}>{children}</DataContext.Provider>
+        <DataContext.Provider value={{employees, setEmployees, firstname, setFirstname, lastname, setLastname}}>{children}</DataContext.Provider>
     )
 
 }

@@ -10,11 +10,9 @@ interface SubmitResponse {
 }
 
 const EditEmployee = () => {
-    const { employees } = useData()
+    const { employees, firstname, setFirstname, lastname, setLastname } = useData()
     const userRef = useRef<HTMLInputElement>(null) 
     const errRef = useRef<HTMLInputElement>(null)   
-    const [ firstname, setFirstname ] = useState('') //maybe pass into context?
-    const [ lastname, setLastname ] = useState('')
     const [ errMsg, setErrMsg ] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
@@ -23,9 +21,6 @@ const EditEmployee = () => {
     const employee = employees.find(employee => employee.id === id)
     console.log(employee)
     console.log(employee?.firstname)
-
-    setFirstname(employee?.firstname)
-    setLastname(employee?.lastname)
 
     useEffect(() => {
         userRef.current?.focus()
@@ -60,8 +55,8 @@ const EditEmployee = () => {
     const handleEdit = async (e: FormEvent<HTMLFormElement> ) => {
         e.preventDefault()
         try {
-            const response: AxiosResponse<SubmitResponse> = await axiosPrivate.put(`/employees/${id}`, 
-                JSON.stringify({firstname: firstname, lastname: lastname}), 
+            const response: AxiosResponse<SubmitResponse> = await axiosPrivate.put(`/employees`, 
+                JSON.stringify({ id:id, firstname: firstname, lastname: lastname}), 
                 {headers: {'Content-Type': 'application/json'},
                  withCredentials: true
                 }
@@ -85,7 +80,7 @@ const EditEmployee = () => {
 
   return (
     <>
-        <h1>Edit Employee: {employee?.firstname}</h1>
+        <h1>Edit Employee: {}</h1>
 
         <section>
 
