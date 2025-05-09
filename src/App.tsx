@@ -15,8 +15,7 @@ const ROLES = {
   'editor': '1984',
   'admin': '5150'
 }
-
-
+//Still need  to find a way to have mutliple rolles in ReqAuth - will sort out later sinc backend organised to suite without!
 function App() { 
   return (
     <Routes>
@@ -31,15 +30,15 @@ function App() {
           <Route path='/' element={<Home/>}/> 
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={ROLES.admin}/>}>
-            <Route path="/employees" element={<ViewEmployees/>}/>
-            <Route path="/employees/edit/:id" element={<EditEmployee/>}/>
-          </Route>
-
           <Route element={<RequireAuth allowedRoles={ROLES.editor}/>}>
-            <Route path="/addEmployee" element={<AddEmployee/>}/>
+            <Route path="/employees" element={<ViewEmployees/>}/>
           </Route>
     
+          <Route element={<RequireAuth allowedRoles={ROLES.admin}/>}>
+            <Route path="/employees/:id" element={<EditEmployee/>}/>
+            <Route path="/addEmployee" element={<AddEmployee/>}/>
+          </Route>
+        
         </Route>
       </Route>
     </Routes>

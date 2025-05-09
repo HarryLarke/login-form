@@ -9,6 +9,7 @@ import useAuth from "../hooks/useAuth"
 //Think it would be good to set the state of all employees, instead of the seletcted one - see how affects the name on the Edit page?
 
 interface Employee {
+    _id: string
     id: string
     firstname: string
     lastname: string
@@ -39,7 +40,10 @@ const ViewEmployees = () => {
                     withCredentials: true
                 })
                 console.log(response?.data)
-                isMounted && setEmployees(response?.data?.employees)
+                isMounted && setEmployees(response.data.employees.map(employee => ({
+                    ...employee, 
+                    id: employee._id
+                })))
             } catch(err:unknown) {
                     if(isAxiosError(err)) {
                         console.log(err.message)
@@ -65,7 +69,7 @@ const ViewEmployees = () => {
         console.log(employees)
         content = <ol>
             {employees.map((employee) => (<li key={employee.id}
-            >{employee.firstname} {employee.lastname}</li>))} 
+            >{employee.firstname} {employee.lastname}<span><Link to={`/employees/${employee.id}`}>edit</Link></span></li>))} 
         </ol>
     }
 

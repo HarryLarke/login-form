@@ -1,24 +1,31 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, FormEvent, MouseEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { isAxiosError } from "axios"
+import { isAxiosError, AxiosResponse } from "axios"
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import useData from "../hooks/useData"
 
 
-const EMPLOYEES_URL = '/employees'
+interface SubmitResponse {
+    response: string 
+}
 
 const EditEmployee = () => {
     const { employees } = useData()
     const userRef = useRef<HTMLInputElement>(null) 
     const errRef = useRef<HTMLInputElement>(null)   
-    const [ name, setName ] = useState('')
+    const [ firstname, setFirstname ] = useState('') //maybe pass into context?
+    const [ lastname, setLastname ] = useState('')
     const [ errMsg, setErrMsg ] = useState('')
     const axiosPrivate = useAxiosPrivate()
     const navigate = useNavigate()
     const { id } = useParams()
 
     const employee = employees.find(employee => employee.id === id)
-    const employeeName = employee?.firstname
+    console.log(employee)
+    console.log(employee?.firstname)
+
+    setFirstname(employee?.firstname)
+    setLastname(employee?.lastname)
 
     useEffect(() => {
         userRef.current?.focus()
@@ -28,9 +35,11 @@ const EditEmployee = () => {
         setErrMsg('')
     }, [name])
 
-    const handleDelete =  async () => {
+
+    const handleDelete =  async (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
         try{
-            const response:string = await axiosPrivate.delete(`${EMPLOYEES_URL}/${id}`,
+            const response:string = await axiosPrivate.delete(`/employees/${id}`, {withCredentials: true}
             )
             console.log(response)
             navigate('/employees')
@@ -43,14 +52,21 @@ const EditEmployee = () => {
                     setErrMsg('Unauthorised Command')
                 }
             }
-        }} 
+        }finally{
+            navigate('/employees')
+        }
+    } 
 
-    const handleEdit = async () => {
-        const editiedEmployee = {name, id}
+    const handleEdit = async (e: FormEvent<HTMLFormElement> ) => {
+        e.preventDefault()
         try {
-            const response = await axiosPrivate.put(`${EMPLOYEES_URL}/${id}`, editiedEmployee)
+            const response: AxiosResponse<SubmitResponse> = await axiosPrivate.put(`/employees/${id}`, 
+                JSON.stringify({firstname: firstname, lastname: lastname}), 
+                {headers: {'Content-Type': 'application/json'},
+                 withCredentials: true
+                }
+            )
             console.log(response)
-            navigate('/employess')
         } catch(err: unknown) {
             if(isAxiosError(err)) {
                 if(!err.response) {
@@ -59,33 +75,46 @@ const EditEmployee = () => {
                 else if (err.response.status === 401) {
                     setErrMsg('Unauthorised Command')
                 }
-            }
+            } 
         errRef.current?.focus()
-        }} 
+        }finally{
+            navigate('/employees')
+        }
+    } 
 
 
   return (
     <>
-        <h1>Edit Employee: {employeeName}</h1>
+        <h1>Edit Employee: {employee?.firstname}</h1>
 
         <section>
 
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}
             aria-live="assertive">{errMsg}</p>
+
             <form onSubmit={handleEdit}>
-                <label htmlFor="employeeName">Employee Name:</label>
+
+                <label htmlFor="firstname">Firstname:</label>
                 <input
                 ref={userRef}
-                id="employeeName"
+                id="firstname"
                 required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstname}
+                onChange={(e) => setFirstname(e.target.value)}
                 />
 
+                <label htmlFor="lastname">Firstname:</label>
+                <input
+                ref={userRef}
+                id="lastname"
+                required
+                value={lastname}
+                onChange={(e) => setLastname(e.target.value)}
+                />
                 <button>Save</button>
             </form>
             <button
-            onChange={handleDelete}
+            onClick={handleDelete}
             >Delete Employee</button>
         </section>
     </>

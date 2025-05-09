@@ -107,6 +107,9 @@ const AddEmployee = () => {
 
                 <button>Add</button>
             </form> 
+
+            <p><Link to='/'>Home</Link></p>
+            <p><Link to='/employees'>View Employees</Link></p>
         </section>)}
         
     </>

@@ -10,7 +10,7 @@ interface DecodedToken {
 }
 
 interface RequireAuthProps {
-    allowedRoles : string
+    allowedRoles : string[] | string
 }
 
 const RequireAuth = ({allowedRoles}: RequireAuthProps) => {
