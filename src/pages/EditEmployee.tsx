@@ -30,13 +30,13 @@ const EditEmployee = () => {
         setErrMsg('')
     }, [name])
 
-
+    //A little funky, probably need to set up specific backup route for deletion on backend!!
     const handleDelete =  async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         try{
             const response: AxiosResponse<Response>  = await axiosPrivate.delete(`/employees`, 
                 {
-                    data: {id},
+                    data: {id:id},
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
                 })

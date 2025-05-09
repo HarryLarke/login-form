@@ -1,19 +1,21 @@
 import { Routes, Route } from "react-router"
 
-import Layout from "./components/Layout"
-import Login from "./components/Login"
-import Unauthorized from "./components/Unauthorised"
-import Home from "./components/Home"
+import Layout from "./pages/Layout"
+import Login from "./pages/Login"
+import Unauthorized from "./pages/Unauthorised"
+import Home from "./pages/Home"
 import RequireAuth from "./components/RequireAuth"
-import ViewEmployees from "./components/ViewEmployees"
-import AddEmployee from "./components/AddEmployee"
-import EditEmployee from "./components/EditEmployee"
+import ViewEmployees from "./pages/ViewEmployees"
+import AddEmployee from "./pages/AddEmployee"
+import EditEmployee from "./pages/EditEmployee"
+import Missing from "./pages/Missing"
+
 //Will need some route protection!!!
 //Currentlly a string - will be a stringType when coming from the AT?
 const ROLES = {
-  'user': '2001',
-  'editor': '1984',
-  'admin': '5150'
+  'user': 2001,
+  'admin': 5150,
+  'editor': 1982
 }
 //Still need  to find a way to have mutliple rolles in ReqAuth - will sort out later sinc backend organised to suite without!
 function App() { 
@@ -26,19 +28,21 @@ function App() {
           <Route path ="/unauthorized" element={<Unauthorized/>}/>
 
           {/* Protected Routes */}
-          <Route element={<RequireAuth allowedRoles={ROLES.user}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.user]}/>}>
           <Route path='/' element={<Home/>}/> 
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={ROLES.editor}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.editor]}/>}>
             <Route path="/employees" element={<ViewEmployees/>}/>
           </Route>
     
-          <Route element={<RequireAuth allowedRoles={ROLES.admin}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.editor]}/>}>
             <Route path="/employees/:id" element={<EditEmployee/>}/>
             <Route path="/addEmployee" element={<AddEmployee/>}/>
           </Route>
         
+        <Route path="*" element={<Missing/>}/>
+
         </Route>
       </Route>
     </Routes>

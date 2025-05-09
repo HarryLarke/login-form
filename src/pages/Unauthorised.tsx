@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 
-const unauthorized = () => {
+const Unauthorized = () => {
   return (
     <>
         <section>
@@ -14,4 +14,4 @@ const unauthorized = () => {
   )
 }
 
-export default unauthorized
+export default Unauthorized

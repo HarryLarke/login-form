@@ -19,7 +19,7 @@ interface GetResponse {
     employees : Employee[]
 }
 
-const ViewEmployees = () => {
+const Employees = () => {
     const axiosPrivate = useAxiosPrivate()
     const location = useLocation()
     const navigate = useNavigate()
@@ -31,6 +31,8 @@ const ViewEmployees = () => {
     //Potentially reset employee data with each reload?
 
     useEffect(() => {
+        if(!auth?.accessToken) return
+
         let isMounted = true 
         const controller = new AbortController()
         const getEmployees = async () => {
@@ -77,16 +79,9 @@ const ViewEmployees = () => {
 
   return (
     <>
-    <h1>View Employees</h1>
-
-    <section>
-        {content}
-        <Link to={'/'}>Home</Link>
-        <Link to={'/addEmployee'}>Add Employee</Link>
-    </section>
-
+    {content}
     </>
   )
 }
 
-export default ViewEmployees
+export default Employees
