@@ -34,8 +34,12 @@ const EditEmployee = () => {
     const handleDelete =  async (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         try{
-            const response:string = await axiosPrivate.delete(`/employees/${id}`, {withCredentials: true}
-            )
+            const response: AxiosResponse<Response>  = await axiosPrivate.delete(`/employees`, 
+                {
+                    data: {id},
+                    headers: {'Content-Type': 'application/json'},
+                    withCredentials: true
+                })
             console.log(response)
             navigate('/employees')
         } catch(err: unknown) {
