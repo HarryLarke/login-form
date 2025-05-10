@@ -33,7 +33,7 @@ function App() {
           </Route>
 
           <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.editor]}/>}>
-            <Route path="/employees" element={<ViewEmployees/>}/>
+            <Route path="/viewEmployees" element={<ViewEmployees/>}/>
           </Route>
     
           <Route element={<RequireAuth allowedRoles={[ROLES.editor]}/>}>

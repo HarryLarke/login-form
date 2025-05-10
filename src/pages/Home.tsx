@@ -13,7 +13,7 @@ const Home = () => {
         <section>
             <h2>Please choose a page:</h2>
             <ul>
-              <li><Link to={'/employees'}>View Employees</Link></li>
+              <li><Link to={'/viewEmployees'}>View Employees</Link></li>
               <li><Link to={'/addEmployee'}>Add Employee</Link></li>
             </ul>
 

@@ -17,6 +17,10 @@ const RequireAuth = ({allowedRoles}: RequireAuthProps) => {
     const { auth } = useAuth()
     const location = useLocation()
 
+
+    if(!auth?.accessToken) {
+        return  <Navigate to='/login' state={{ from:location }} replace/>
+    }
        
     const decoded = auth?.accessToken ? jwtDecode<DecodedToken>(auth.accessToken) : undefined
     const roles = decoded?.UserInfo?.roles.map(role => Number(role)) || []

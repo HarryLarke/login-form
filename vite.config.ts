@@ -14,7 +14,12 @@ export default defineConfig({
       '/employees': {
         target: 'http://localhost:3500',
         changeOrigin: true,
-        secure: false
+        secure: false,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('Access-Control-Allow-Credentials', 'true')
+          })
+        }
       },
       '/auth': {
         target: 'http://localhost:3500',

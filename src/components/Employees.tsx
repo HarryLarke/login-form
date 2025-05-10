@@ -60,7 +60,7 @@ const Employees = () => {
             controller.abort()
         }
 
-    }, [axiosPrivate, location, navigate])
+    }, [axiosPrivate, location, navigate, setEmployees])
     //Potentiall just map names because - don't really want ID being accessed by JS hacking!
 
     let content 
