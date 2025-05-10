@@ -3,15 +3,9 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import { isAxiosError, AxiosResponse } from "axios"
 import { Link } from "react-router"
 
-
-
 interface SubmitResponse {
     response: string
 } 
-
-//Will need to mess with the employee data etc!`
-
-//Maybe make an internal registeration system? //have to mess with the backend? Or change to users later?
 
 const AddEmployee = () => {
     const errRef = useRef<HTMLInputElement>(null)
@@ -30,7 +24,7 @@ const AddEmployee = () => {
         setErrMsg('')
     }, [firstname, lastname])
 
-    //Using AxioPrivate  hook here - ts does not like it! 
+
     //Might mnake a pop up here! To show that the new employee has been added? Plus a option to add a new one and a route to the view employees too! 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -49,7 +43,7 @@ const AddEmployee = () => {
                  withCredentials: true
                 }
             )
-            console.log(response)
+
             setFirstname('')
             setLastname('')
         } catch(err: unknown) {
@@ -72,7 +66,7 @@ const AddEmployee = () => {
         {succuess ? (
             <section>
                 <h1>Employee Successfully submitted</h1>
-                <p><Link to='/employees'>View Employees</Link></p>
+                <p><Link to='/viewEmployees'>View Employees</Link></p>
                 <p><Link to='/addEmployee'>Add more Employees</Link></p>
             </section>
         ) : (
@@ -109,7 +103,7 @@ const AddEmployee = () => {
             </form> 
 
             <p><Link to='/'>Home</Link></p>
-            <p><Link to='/employees'>View Employees</Link></p>
+            <p><Link to='/viewEmployees'>View Employees</Link></p>
         </section>)}
         
     </>

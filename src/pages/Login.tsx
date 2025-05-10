@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
 import axios from '../api/axios'
 
-
-//Could I set the auth in just one nice object???
 const LOGIN_URL = '/auth'
 
 interface LoginResponse {
@@ -40,7 +38,6 @@ const Login = () => {
                         headers: {'Content-Type':'application/json'},
                         withCredentials: true
                     })
-            console.log(JSON.stringify(response?.data))
             const accessToken: string = response?.data?.accessToken
 
             setAuth({user, accessToken})

@@ -26,10 +26,6 @@ const Employees = () => {
     const { employees, setEmployees, setFirstname, setLastname } = useData()
     const { auth } = useAuth()
 
-    console.log(auth?.accessToken)
-
-    //Potentially reset employee data with each reload?
-
     useEffect(() => {
         if(!auth?.accessToken) return
 
@@ -41,7 +37,6 @@ const Employees = () => {
                     signal: controller.signal,
                     withCredentials: true
                 })
-                console.log(response?.data)
                 isMounted && setEmployees(response.data.employees.map(employee => ({
                     ...employee, 
                     id: employee._id
@@ -68,7 +63,6 @@ const Employees = () => {
     if(!employees || employees.length === 0) {
         content = <p>No users to display...</p>
     }  else {
-        console.log(employees)
         content = <ol>
             {employees.map((employee) => (<li key={employee.id}
             >{employee.firstname} {employee.lastname}<span>

@@ -13,9 +13,9 @@ import Missing from "./pages/Missing"
 //Will need some route protection!!!
 //Currentlly a string - will be a stringType when coming from the AT?
 const ROLES = {
-  'user': 2001,
-  'admin': 5150,
-  'editor': 1982
+  'User': 2001,
+  'Admin': 5150,
+  'Editor': 1984
 }
 //Still need  to find a way to have mutliple rolles in ReqAuth - will sort out later sinc backend organised to suite without!
 function App() { 
@@ -28,15 +28,15 @@ function App() {
           <Route path ="/unauthorized" element={<Unauthorized/>}/>
 
           {/* Protected Routes */}
-          <Route element={<RequireAuth allowedRoles={[ROLES.user]}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
           <Route path='/' element={<Home/>}/> 
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.admin, ROLES.editor]}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]}/>}>
             <Route path="/viewEmployees" element={<ViewEmployees/>}/>
           </Route>
     
-          <Route element={<RequireAuth allowedRoles={[ROLES.editor]}/>}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.Editor]}/>}>
             <Route path="/employees/:id" element={<EditEmployee/>}/>
             <Route path="/addEmployee" element={<AddEmployee/>}/>
           </Route>
